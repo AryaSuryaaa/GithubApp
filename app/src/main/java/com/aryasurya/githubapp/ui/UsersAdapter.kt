@@ -10,6 +10,17 @@ import com.aryasurya.githubapp.databinding.ItemUserBinding
 import com.bumptech.glide.Glide
 
 class UsersAdapter : androidx.recyclerview.widget.ListAdapter<ItemsItem, UsersAdapter.MyViewHolder>(DIFF_CALLBACK) {
+
+    private lateinit var onItemClickCallBack: OnItemClickCallback
+
+    interface OnItemClickCallback {
+        fun onItemClicked(data: ItemsItem)
+    }
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallBack = onItemClickCallback
+    }
+
     class MyViewHolder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user: ItemsItem) {
             binding.tvName.text = user.login
@@ -27,6 +38,10 @@ class UsersAdapter : androidx.recyclerview.widget.ListAdapter<ItemsItem, UsersAd
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val user = getItem(position)
         holder.bind(user)
+
+        holder.itemView.setOnClickListener {
+            onItemClickCallBack.onItemClicked(getItem(holder.adapterPosition))
+        }
     }
 
     companion object {

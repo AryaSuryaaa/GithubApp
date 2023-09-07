@@ -1,5 +1,6 @@
 package com.aryasurya.githubapp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -21,8 +22,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
-        private const val USER_LOGIN = "aryasuryaa"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -48,17 +49,27 @@ class MainActivity : AppCompatActivity() {
                     searchBar.text = searchView.text
                     searchView.hide()
                     Log.d(TAG, "ini yang dicari : ${searchBar.text}")
-//                    findUsers(searchView.text.toString())
+
+                    // Menerima data yang dicari
                     mainViewModel.findUsers(searchView.text.toString())
                     false
                 }
         }
+
     }
 
     fun setUserData(userLogin: List<ItemsItem?>?) {
         val adapter = UsersAdapter()
         adapter.submitList(userLogin)
         binding.rvUsers.adapter = adapter
+
+        adapter.setOnItemClickCallback(object : UsersAdapter.OnItemClickCallback {
+            override fun onItemClicked(data: ItemsItem) {
+                val intentToDetail = Intent(this@MainActivity, DetailActivity::class.java)
+                intentToDetail.putExtra("DATA", data.login)
+                startActivity(intentToDetail)
+            }
+        })
     }
 
     private fun showLoading(isLoading: Boolean) {

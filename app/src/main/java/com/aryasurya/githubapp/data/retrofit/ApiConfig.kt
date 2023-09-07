@@ -10,8 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 class ApiConfig {
     companion object {
         fun getApiService(): ApiService {
-//            val loggingInterceptor =
-//                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
             // Demi keamanan data
             val authInterceptor = Interceptor { chain ->

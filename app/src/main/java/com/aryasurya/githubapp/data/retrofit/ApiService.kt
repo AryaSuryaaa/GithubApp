@@ -1,5 +1,6 @@
 package com.aryasurya.githubapp.data.retrofit
 
+import com.aryasurya.githubapp.data.response.DetailUserResponse
 import com.aryasurya.githubapp.data.response.GithubResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -12,4 +13,9 @@ interface ApiService {
     fun getListUsers(
         @Query("q") q: String
     ): Call<GithubResponse>
+
+    @GET("users/{username}")
+    fun getDetailUser(
+        @Path("username") username: String
+    ): Call<DetailUserResponse>
 }
