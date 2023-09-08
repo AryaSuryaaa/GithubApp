@@ -53,7 +53,6 @@ class UsersAdapter : androidx.recyclerview.widget.ListAdapter<ItemsItem, UsersAd
             override fun areContentsTheSame(oldItem: ItemsItem, newItem: ItemsItem): Boolean {
                 return oldItem == newItem
             }
-
         }
     }
 }

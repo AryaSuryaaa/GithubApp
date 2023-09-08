@@ -5,61 +5,60 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.StringRes
+import androidx.lifecycle.ViewModelProvider
 import com.aryasurya.githubapp.R
 import com.aryasurya.githubapp.data.response.DetailUserResponse
 import com.aryasurya.githubapp.data.retrofit.ApiConfig
 import com.aryasurya.githubapp.databinding.ActivityDetailBinding
 import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayoutMediator
 import retrofit2.Call
 import retrofit2.Response
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
+    private lateinit var followersViewModel:FollowersViewModel
 
     companion object {
         private const val TAG = "Detail Activity"
+        @StringRes
+        private val TAB_TITLES = intArrayOf(
+            R.string.tab_text_1,
+            R.string.tab_text_2
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         val getUsername = intent.getStringExtra("DATA")
+        // getUsername dipaksa tidak null
+        followersViewModel = ViewModelProvider(this, FollowersViewModelFactory.getInstance(this, getUsername!!)).get(FollowersViewModel::class.java)
 
-        if (getUsername != null) {
-            getUserDetail(getUsername)
+        setContentView(binding.root)
+
+        followersViewModel.detailUser.observe(this) {
+            setDataDetail(it)
         }
 
+        val sectionPagerAdapter = SectionsPagerAdapter(this)
+        val viewPager = binding.viewPager
+        viewPager.adapter = sectionPagerAdapter
+        val tabs = binding.tabsLayout
+        TabLayoutMediator(tabs, viewPager) { tab, position ->
+            tab.text = resources.getString(TAB_TITLES[position])
+        }.attach()
+    }
+
+    fun setDataDetail(detailData: DetailUserResponse) {
+        binding.tvNameDetail.text = detailData.login
+        Glide.with(binding.root.context)
+            .load(detailData.avatarUrl)
+            .into(binding.imgDetailUser)
     }
 
 
-    fun getUserDetail(username: String) {
-        val userDetail = ApiConfig.getApiService().getDetailUser(username)
-        userDetail.enqueue(object : retrofit2.Callback<DetailUserResponse> {
-            override fun onResponse(
-                call: Call<DetailUserResponse>,
-                response: Response<DetailUserResponse>
-            ) {
-                if (response.isSuccessful) {
-                    val responseBody = response.body()
-                    if (responseBody != null) {
-                        binding.tvUsernameDetail.text = responseBody.login
-                        binding.tvNameDetail.text = responseBody.name.toString()
-                        Glide.with(this@DetailActivity)
-                            .load(responseBody.avatarUrl)
-                            .into(binding.imgDetailUser)
-                        binding.tvFollowersDetail.text = resources.getString(R.string.followers_text, responseBody.followers)
-                        binding.tvFollowingDetail.text = resources.getString(R.string.following_text, responseBody.following)
-                    } else {
-                        Log.d(TAG, "onFailure: ${response.message()}")
-                    }
-                }
-            }
 
-            override fun onFailure(call: Call<DetailUserResponse>, t: Throwable) {
-                Log.d(TAG, "onFailure: ${t.message}")
-            }
-        })
-    }
 }

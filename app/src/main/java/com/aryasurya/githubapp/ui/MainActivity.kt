@@ -8,12 +8,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.aryasurya.githubapp.data.response.GithubResponse
 import com.aryasurya.githubapp.data.response.ItemsItem
-import com.aryasurya.githubapp.data.retrofit.ApiConfig
 import com.aryasurya.githubapp.databinding.ActivityMainBinding
-import retrofit2.Call
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -55,7 +51,6 @@ class MainActivity : AppCompatActivity() {
                     false
                 }
         }
-
     }
 
     fun setUserData(userLogin: List<ItemsItem?>?) {

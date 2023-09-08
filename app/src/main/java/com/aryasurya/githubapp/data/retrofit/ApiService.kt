@@ -1,7 +1,10 @@
 package com.aryasurya.githubapp.data.retrofit
 
 import com.aryasurya.githubapp.data.response.DetailUserResponse
+import com.aryasurya.githubapp.data.response.FollowersResponse
+import com.aryasurya.githubapp.data.response.FollowersResponseItem
 import com.aryasurya.githubapp.data.response.GithubResponse
+import com.aryasurya.githubapp.data.response.ItemsItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.http.GET
@@ -18,4 +21,11 @@ interface ApiService {
     fun getDetailUser(
         @Path("username") username: String
     ): Call<DetailUserResponse>
+
+    @GET("users/{username}/followers")
+    fun getFollowers(@Path("username") username: String): Call<List<FollowersResponseItem>>
+    @GET("users/{username}/following")
+    fun getFollowing(@Path("username") username: String): Call<List<FollowersResponseItem>>
+
+
 }
