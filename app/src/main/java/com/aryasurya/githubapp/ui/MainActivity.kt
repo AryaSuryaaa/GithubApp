@@ -40,20 +40,20 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             searchView.setupWithSearchBar(searchBar)
             searchView
-                .editText
-                .setOnEditorActionListener { v, actionId, event ->
-                    searchBar.text = searchView.text
-                    searchView.hide()
-                    Log.d(TAG, "ini yang dicari : ${searchBar.text}")
+                    .editText
+                    .setOnEditorActionListener { v, actionId, event ->
+                        searchBar.text = searchView.text
+                        searchView.hide()
+                        Log.d(TAG, "ini yang dicari : ${searchBar.text}")
 
-                    // Menerima data yang dicari
-                    mainViewModel.findUsers(searchView.text.toString())
-                    false
+                        // Menerima data yang dicari
+                        mainViewModel.findUsers(searchView.text.toString())
+                        false
                 }
         }
     }
 
-    fun setUserData(userLogin: List<ItemsItem?>?) {
+    private fun setUserData(userLogin: List<ItemsItem?>?) {
         val adapter = UsersAdapter()
         adapter.submitList(userLogin)
         binding.rvUsers.adapter = adapter

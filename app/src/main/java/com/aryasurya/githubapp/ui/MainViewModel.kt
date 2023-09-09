@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.aryasurya.githubapp.data.response.FollowersResponseItem
 import com.aryasurya.githubapp.data.response.GithubResponse
 import com.aryasurya.githubapp.data.response.ItemsItem
 import com.aryasurya.githubapp.data.retrofit.ApiConfig
@@ -22,9 +21,6 @@ class MainViewModel: ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
-
-    private val _listFollowers = MutableLiveData<List<FollowersResponseItem>>()
-    val listFollowers: LiveData<List<FollowersResponseItem>> = _listFollowers
 
     companion object {
         private const val TAG = "MainViewModel"

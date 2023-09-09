@@ -2,19 +2,13 @@ package com.aryasurya.githubapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModelProvider
 import com.aryasurya.githubapp.R
 import com.aryasurya.githubapp.data.response.DetailUserResponse
-import com.aryasurya.githubapp.data.retrofit.ApiConfig
 import com.aryasurya.githubapp.databinding.ActivityDetailBinding
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
-import retrofit2.Call
-import retrofit2.Response
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
@@ -35,7 +29,8 @@ class DetailActivity : AppCompatActivity() {
 
         val getUsername = intent.getStringExtra("DATA")
         // getUsername dipaksa tidak null
-        followersViewModel = ViewModelProvider(this, FollowersViewModelFactory.getInstance(this, getUsername!!)).get(FollowersViewModel::class.java)
+        followersViewModel =
+            ViewModelProvider(this, FollowersViewModelFactory.getInstance(this, getUsername!!))[FollowersViewModel::class.java]
 
         setContentView(binding.root)
 
@@ -53,7 +48,10 @@ class DetailActivity : AppCompatActivity() {
     }
 
     fun setDataDetail(detailData: DetailUserResponse) {
-        binding.tvNameDetail.text = detailData.login
+        binding.tvUsernameDetail.text = detailData.login
+        binding.tvNameDetail.text = detailData.name.toString()
+        binding.tvFollowersDetail.text = getString(R.string.followers_text, detailData.followers)
+        binding.tvFollowingDetail.text = getString(R.string.following_text, detailData.following)
         Glide.with(binding.root.context)
             .load(detailData.avatarUrl)
             .into(binding.imgDetailUser)

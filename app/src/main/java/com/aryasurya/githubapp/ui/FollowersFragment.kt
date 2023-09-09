@@ -47,6 +47,10 @@ class FollowersFragment : Fragment() {
             binding.rvFollowersDetail.adapter = adapter
         }
 
+        followersViewModel.isLoading.observe(requireActivity()) {
+            showLoading(it)
+        }
+
     }
 
     override fun onResume() {
@@ -60,6 +64,14 @@ class FollowersFragment : Fragment() {
             followersViewModel.findDataUserFollowers()
         } else {
             followersViewModel.findDataUserFollowing()
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBarDetail.visibility = View.VISIBLE
+        } else {
+            binding.progressBarDetail.visibility = View.GONE
         }
     }
 }
