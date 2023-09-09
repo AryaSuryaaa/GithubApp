@@ -36,8 +36,6 @@ class FollowersFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val index = arguments?.getInt(ARG_POSITION, 1)
-//        binding.sectionLevel.text = getString(R.string.content_tab_text, index)
 
         binding.rvFollowersDetail.layoutManager = LinearLayoutManager(requireActivity())
 

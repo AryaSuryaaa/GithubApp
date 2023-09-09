@@ -2,6 +2,7 @@ package com.aryasurya.githubapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModelProvider
 import com.aryasurya.githubapp.R
@@ -34,17 +35,23 @@ class DetailActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        followersViewModel.detailUser.observe(this) {
-            setDataDetail(it)
+        followersViewModel.isLoading.observe(this) {
+            showLoading(it)
         }
 
-        val sectionPagerAdapter = SectionsPagerAdapter(this)
-        val viewPager = binding.viewPager
-        viewPager.adapter = sectionPagerAdapter
-        val tabs = binding.tabsLayout
-        TabLayoutMediator(tabs, viewPager) { tab, position ->
-            tab.text = resources.getString(TAB_TITLES[position])
-        }.attach()
+        followersViewModel.detailUser.observe(this) {
+            setDataDetail(it)
+
+            val sectionPagerAdapter = SectionsPagerAdapter(this)
+            val viewPager = binding.viewPager
+            viewPager.adapter = sectionPagerAdapter
+            val tabs = binding.tabsLayout
+            TabLayoutMediator(tabs, viewPager) { tab, position ->
+                tab.text = resources.getString(TAB_TITLES[position])
+            }.attach()
+        }
+
+
     }
 
     fun setDataDetail(detailData: DetailUserResponse) {
@@ -57,6 +64,13 @@ class DetailActivity : AppCompatActivity() {
             .into(binding.imgDetailUser)
     }
 
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar2.visibility = View.VISIBLE
+        } else {
+            binding.progressBar2.visibility = View.GONE
+        }
+    }
 
 
 }

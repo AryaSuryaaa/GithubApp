@@ -6,14 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.aryasurya.githubapp.R
 import com.aryasurya.githubapp.data.response.DetailUserResponse
-import com.aryasurya.githubapp.data.response.FollowersResponse
 import com.aryasurya.githubapp.data.response.FollowersResponseItem
-import com.aryasurya.githubapp.data.response.GithubResponse
-import com.aryasurya.githubapp.data.response.ItemsItem
 import com.aryasurya.githubapp.data.retrofit.ApiConfig
-import com.bumptech.glide.Glide
 import retrofit2.Call
 import retrofit2.Response
 
@@ -85,6 +80,7 @@ class FollowersViewModel(var username: String): ViewModel() {
     }
 
     fun getUserDetail() {
+        _isLoading.value = true
         val userDetail = ApiConfig.getApiService().getDetailUser(username)
         userDetail.enqueue(object : retrofit2.Callback<DetailUserResponse> {
             override fun onResponse(
@@ -94,6 +90,7 @@ class FollowersViewModel(var username: String): ViewModel() {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
+                        _isLoading.value = false
                         _detailUser.value = responseBody
                     } else {
                         Log.d("FollowersViewModel", "onFailure: ${response.message()}")
@@ -102,6 +99,7 @@ class FollowersViewModel(var username: String): ViewModel() {
             }
 
             override fun onFailure(call: Call<DetailUserResponse>, t: Throwable) {
+                _isLoading.value = false
                 Log.d("FollowersViewModel", "onFailure: ${t.message}")
             }
         })
