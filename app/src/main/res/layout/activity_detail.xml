@@ -6,15 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".ui.DetailActivity">
 
+    <ImageView
+        android:id="@+id/img_arrow_back"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/baseline_arrow_back_24"
+        app:layout_constraintTop_toTopOf="@id/tv_username_detail"
+        app:layout_constraintBottom_toBottomOf="@id/tv_username_detail"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_detail_user"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:src="@tools:sample/avatars"
-        android:layout_marginTop="24dp" />
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="@+id/img_arrow_back"
+        app:layout_constraintTop_toBottomOf="@id/tv_username_detail"
+        tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/tv_username_detail"
@@ -22,55 +32,107 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textSize="21sp"
+        android:layout_marginTop="16dp"
         android:layout_marginHorizontal="16dp"
-        android:textAlignment="center"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/img_detail_user"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/img_arrow_back"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="I Kadek Arya Surya Saputra"/>
+        tools:text="I Kadek Arya "/>
 
     <TextView
         android:id="@+id/tv_name_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:maxLines="2"
-        android:textAlignment="center"
-        android:layout_marginHorizontal="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_username_detail"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/img_detail_user"
+        app:layout_constraintStart_toStartOf="@id/img_detail_user"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="hallo nama saya andi saya ssuka sama apa ya. Hummm ga suka apa apa sih. Cuma pengen ngejar karir aja"/>
+        tools:text="hallo nama "/>
+
+    <Button
+        android:id="@+id/btn_follow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:text="Follow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/img_arrow_back"
+        app:layout_constraintTop_toBottomOf="@id/tv_name_detail" />
+
+    <TextView
+        android:id="@+id/tv_repo_detail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintTop_toTopOf="@id/img_detail_user"
+        app:layout_constraintStart_toEndOf="@id/img_detail_user"
+        app:layout_constraintEnd_toStartOf="@+id/tv_followers_detail"
+        tools:text="12"/>
 
     <TextView
         android:id="@+id/tv_followers_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:layout_marginTop="16dp"
         android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/tv_name_detail"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="@id/img_detail_user"
+        app:layout_constraintStart_toEndOf="@id/tv_repo_detail"
         app:layout_constraintEnd_toStartOf="@+id/tv_following_detail"
-        tools:text="234 Followers"/>
+        tools:text="983"/>
 
     <TextView
         android:id="@+id/tv_following_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@id/tv_followers_detail"
+        app:layout_constraintEnd_toEndOf="@+id/tv_username_detail"
         app:layout_constraintStart_toEndOf="@id/tv_followers_detail"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="2345 Following"/>
+        app:layout_constraintTop_toTopOf="@id/tv_followers_detail"
+        tools:text="234" />
+
+    <TextView
+        android:id="@+id/tv_repo_detail_txt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Repositoris"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/tv_followers_detail_txt"
+        app:layout_constraintStart_toStartOf="@+id/tv_repo_detail"
+        app:layout_constraintTop_toBottomOf="@id/tv_repo_detail" />
+
+    <TextView
+        android:id="@+id/tv_followers_detail_txt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        app:layout_constraintTop_toTopOf="@id/tv_repo_detail_txt"
+        app:layout_constraintStart_toEndOf="@id/tv_repo_detail_txt"
+        app:layout_constraintEnd_toStartOf="@+id/tv_following_detail_txt"
+        android:text="Followers"/>
+
+    <TextView
+        android:id="@+id/tv_following_detail_txt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Following"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/tv_following_detail"
+        app:layout_constraintStart_toEndOf="@id/tv_followers_detail_txt"
+        app:layout_constraintTop_toTopOf="@id/tv_followers_detail_txt" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/tv_followers_detail"
+        app:layout_constraintTop_toBottomOf="@id/btn_follow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

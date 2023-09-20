@@ -51,14 +51,19 @@ class DetailActivity : AppCompatActivity() {
             }.attach()
         }
 
+        binding.imgArrowBack.setOnClickListener {
+            finish()
+        }
+
 
     }
 
     fun setDataDetail(detailData: DetailUserResponse) {
         binding.tvUsernameDetail.text = detailData.login
         binding.tvNameDetail.text = detailData.name.toString()
-        binding.tvFollowersDetail.text = getString(R.string.followers_text, detailData.followers)
-        binding.tvFollowingDetail.text = getString(R.string.following_text, detailData.following)
+        binding.tvFollowersDetail.text = detailData.followers.toString()
+        binding.tvFollowingDetail.text = detailData.following.toString()
+        binding.tvRepoDetail.text = detailData.publicRepos.toString()
         Glide.with(binding.root.context)
             .load(detailData.avatarUrl)
             .into(binding.imgDetailUser)
