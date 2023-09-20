@@ -1,5 +1,6 @@
 package com.aryasurya.githubapp.data.retrofit
 
+import com.aryasurya.githubapp.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -13,7 +14,7 @@ class ApiConfig {
             val authInterceptor = Interceptor { chain ->
                 val req = chain.request()
                 val requestHeaders = req.newBuilder()
-                    .addHeader("Authorization", "token [masukkan token]")
+                    .addHeader("Authorization", BuildConfig.KEY)
                     .build()
                 chain.proceed(requestHeaders)
             }

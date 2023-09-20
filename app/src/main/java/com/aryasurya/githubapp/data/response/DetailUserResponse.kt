@@ -2,7 +2,7 @@ package com.aryasurya.githubapp.data.response
 
 import com.google.gson.annotations.SerializedName
 
-data class DetailUserResponse(
+data class  DetailUserResponse(
 
 	@field:SerializedName("gists_url")
 	val gistsUrl: String? = null,
