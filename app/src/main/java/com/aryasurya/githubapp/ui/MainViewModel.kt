@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.aryasurya.githubapp.data.response.GithubResponse
-import com.aryasurya.githubapp.data.response.ItemsItem
-import com.aryasurya.githubapp.data.retrofit.ApiConfig
+import com.aryasurya.githubapp.data.remote.response.GithubResponse
+import com.aryasurya.githubapp.data.remote.response.ItemsItem
+import com.aryasurya.githubapp.data.remote.retrofit.ApiConfig
 import retrofit2.Call
 import retrofit2.Response
 

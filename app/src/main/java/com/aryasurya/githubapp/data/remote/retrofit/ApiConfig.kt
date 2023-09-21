@@ -1,4 +1,4 @@
-package com.aryasurya.githubapp.data.retrofit
+package com.aryasurya.githubapp.data.remote.retrofit
 
 import com.aryasurya.githubapp.BuildConfig
 import okhttp3.Interceptor

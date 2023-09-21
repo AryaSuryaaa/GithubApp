@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aryasurya.githubapp.R
-import com.aryasurya.githubapp.data.response.ItemsItem
+import com.aryasurya.githubapp.data.remote.response.ItemsItem
 import com.aryasurya.githubapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {

@@ -6,9 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.aryasurya.githubapp.data.response.DetailUserResponse
-import com.aryasurya.githubapp.data.response.FollowersResponseItem
-import com.aryasurya.githubapp.data.retrofit.ApiConfig
+import com.aryasurya.githubapp.data.remote.response.DetailUserResponse
+import com.aryasurya.githubapp.data.remote.response.FollowersResponseItem
+import com.aryasurya.githubapp.data.remote.retrofit.ApiConfig
 import retrofit2.Call
 import retrofit2.Response
 

@@ -6,7 +6,7 @@ import android.view.View
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModelProvider
 import com.aryasurya.githubapp.R
-import com.aryasurya.githubapp.data.response.DetailUserResponse
+import com.aryasurya.githubapp.data.remote.response.DetailUserResponse
 import com.aryasurya.githubapp.databinding.ActivityDetailBinding
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator

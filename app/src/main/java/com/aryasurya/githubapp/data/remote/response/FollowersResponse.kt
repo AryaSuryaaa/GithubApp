@@ -1,4 +1,4 @@
-package com.aryasurya.githubapp.data.response
+package com.aryasurya.githubapp.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 

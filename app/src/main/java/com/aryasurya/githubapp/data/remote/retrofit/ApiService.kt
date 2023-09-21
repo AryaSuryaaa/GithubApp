@@ -1,8 +1,8 @@
-package com.aryasurya.githubapp.data.retrofit
+package com.aryasurya.githubapp.data.remote.retrofit
 
-import com.aryasurya.githubapp.data.response.DetailUserResponse
-import com.aryasurya.githubapp.data.response.FollowersResponseItem
-import com.aryasurya.githubapp.data.response.GithubResponse
+import com.aryasurya.githubapp.data.remote.response.DetailUserResponse
+import com.aryasurya.githubapp.data.remote.response.FollowersResponseItem
+import com.aryasurya.githubapp.data.remote.response.GithubResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
