@@ -1,19 +1,24 @@
-package com.aryasurya.githubapp.ui
+package com.aryasurya.githubapp.ui.detailuser
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.aryasurya.githubapp.R
+import com.aryasurya.githubapp.data.local.entity.FollowedEntity
 import com.aryasurya.githubapp.data.remote.response.DetailUserResponse
 import com.aryasurya.githubapp.databinding.ActivityDetailBinding
+import com.aryasurya.githubapp.ui.SectionsPagerAdapter
+import com.aryasurya.githubapp.ui.viewmodel.FollowersViewModelFactory
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
-    private lateinit var followersViewModel:FollowersViewModel
+    private lateinit var followersViewModel: FollowersViewModel
 
     companion object {
         private const val TAG = "Detail Activity"
@@ -31,16 +36,33 @@ class DetailActivity : AppCompatActivity() {
         val getUsername = intent.getStringExtra("DATA")
         // getUsername dipaksa tidak null
         followersViewModel =
-            ViewModelProvider(this, FollowersViewModelFactory.getInstance(this, getUsername!!))[FollowersViewModel::class.java]
+            ViewModelProvider(
+                this, FollowersViewModelFactory.getInstance(this, getUsername!!)
+            )[FollowersViewModel::class.java]
 
         setContentView(binding.root)
+
 
         followersViewModel.isLoading.observe(this) {
             showLoading(it)
         }
 
-        followersViewModel.detailUser.observe(this) {
-            setDataDetail(it)
+
+        followersViewModel.detailUser.observe(this) {detail ->
+            if (detail != null) {
+                setDataDetail(detail)
+            }
+
+            binding.btnFollow.setOnClickListener {
+                detail?.avatarUrl?.let { avatarUrl ->
+                    detail.login?.let { login ->
+                        FollowedEntity(
+                            login, avatarUrl
+                        )
+                    }
+                }?.let { it2 -> followersViewModel.updateFollowed(it2) }
+            }
+
 
             val sectionPagerAdapter = SectionsPagerAdapter(this)
             val viewPager = binding.viewPager
@@ -54,7 +76,6 @@ class DetailActivity : AppCompatActivity() {
         binding.imgArrowBack.setOnClickListener {
             finish()
         }
-
 
     }
 

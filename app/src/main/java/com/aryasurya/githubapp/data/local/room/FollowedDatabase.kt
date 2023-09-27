@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.aryasurya.githubapp.data.local.entity.FollowedEntity
 
-@Database(entities = [FollowedEntity::class], version = 1, exportSchema = false)
+@Database(entities = [FollowedEntity::class], version = 1)
 abstract class FollowedDatabase : RoomDatabase(){
     abstract fun follwedDao(): FollowedDao
 

@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.aryasurya.githubapp"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.aryasurya.githubapp"
@@ -19,7 +19,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "KEY", "\"token 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\"")
+        buildConfigField("String", "KEY", "\"token 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\"")
     }
 
     buildTypes {
@@ -40,11 +40,11 @@ android {
         buildConfig = true
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
@@ -67,9 +67,9 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     //room
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation("androidx.room:room-runtime:2.6.0-beta01")
-    kapt("androidx.room:room-compiler:2.5.0-alpha02")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
+    implementation("androidx.room:room-runtime:2.4.2")
+    ksp("androidx.room:room-compiler:2.4.2")
 
     //retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
@@ -77,7 +77,7 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
     //coroutine support
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2") //viewModelScope
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2") //liveData
-    implementation("androidx.room:room-ktx:2.5.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0") //viewModelScope
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.0") //liveData
+    implementation("androidx.room:room-ktx:2.4.2")
 }
