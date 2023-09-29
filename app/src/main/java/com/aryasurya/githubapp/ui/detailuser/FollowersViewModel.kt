@@ -1,4 +1,4 @@
-package com.aryasurya.githubapp.ui
+package com.aryasurya.githubapp.ui.detailuser
 
 import android.app.Application
 import android.content.Context

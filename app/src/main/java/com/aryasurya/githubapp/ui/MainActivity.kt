@@ -14,14 +14,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.aryasurya.githubapp.R
 import com.aryasurya.githubapp.data.remote.response.ItemsItem
 import com.aryasurya.githubapp.databinding.ActivityMainBinding
-import com.aryasurya.githubapp.ui.detailuser.DetailActivity
+import com.aryasurya.githubapp.ui.followed.FollowedActivity
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private val mainViewModel by viewModels<MainViewModel>()
-    private val rotateOpen: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_open_anim) }
-    private val rotateClose: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.rotate_close_anim) }
     private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.from_bottom_anime) }
     private val toBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim) }
 
@@ -96,6 +94,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 onMoreButtonClicked()
             }
             R.id.fab_account -> {
+                val intentToFollowedActivity = Intent(this, FollowedActivity::class.java)
+                startActivity(intentToFollowedActivity)
+
                 Toast.makeText(this, "Account button clicked", Toast.LENGTH_SHORT).show()
             }
             R.id.fab_setting -> {

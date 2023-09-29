@@ -3,7 +3,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.aryasurya.githubapp.data.local.entity.FollowedEntity
 import com.aryasurya.githubapp.data.remote.response.FollowersResponseItem
 import com.aryasurya.githubapp.databinding.ItemListFollowersBinding
 import com.bumptech.glide.Glide

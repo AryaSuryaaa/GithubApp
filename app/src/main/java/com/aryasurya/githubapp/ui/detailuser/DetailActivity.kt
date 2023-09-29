@@ -2,7 +2,6 @@ package com.aryasurya.githubapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModelProvider
@@ -11,12 +10,13 @@ import com.aryasurya.githubapp.data.local.entity.Follow
 import com.aryasurya.githubapp.data.remote.response.DetailUserResponse
 import com.aryasurya.githubapp.databinding.ActivityDetailBinding
 import com.aryasurya.githubapp.helper.FollowersViewModelFactory
+import com.aryasurya.githubapp.ui.detailuser.FollowersViewModel
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
-    private lateinit var followersViewModel:FollowersViewModel
+    private lateinit var followersViewModel: FollowersViewModel
 
     companion object {
         private const val TAG = "Detail Activity"
