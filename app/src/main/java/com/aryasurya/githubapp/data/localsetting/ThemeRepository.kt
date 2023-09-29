@@ -1,6 +1,8 @@
 package com.aryasurya.githubapp.data.localsetting
 
 import android.app.Application
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import com.aryasurya.githubapp.data.local.room.FollowDatabase
 import com.aryasurya.githubapp.data.localsetting.entity.ThemeEntity
 import com.aryasurya.githubapp.data.localsetting.room.ThemeDao
@@ -16,8 +18,8 @@ class ThemeRepository(application: Application) {
         themeDao = db.themeDao()
     }
 
-    fun getThemeSetting(): Flow<Boolean> {
-        return themeDao.getThemeSetting().map { it?.isDarkModeActive ?: false }
+    fun getThemeSetting(): LiveData<Boolean> {
+        return themeDao.getThemeSetting().map { it?.isDarkModeActive ?: false }.asLiveData()
     }
 
     suspend fun saveThemeSetting(isDarkModeActive: Boolean) {

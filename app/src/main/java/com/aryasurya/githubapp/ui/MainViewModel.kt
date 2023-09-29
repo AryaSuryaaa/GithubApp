@@ -29,7 +29,7 @@ class MainViewModel: ViewModel() {
         findUsers()
     }
 
-    fun findUsers(profile: String = "arif") {
+    fun findUsers(profile: String = "") {
         _isLoading.value = true
         val user = ApiConfig.getApiService().getListUsers(profile)
         user.enqueue(object : retrofit2.Callback<GithubResponse> {

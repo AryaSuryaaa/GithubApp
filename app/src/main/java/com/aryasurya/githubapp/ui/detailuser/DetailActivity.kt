@@ -2,8 +2,10 @@ package com.aryasurya.githubapp.ui.detailuser
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.aryasurya.githubapp.R
 import com.aryasurya.githubapp.data.local.entity.Follow
@@ -19,7 +21,6 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var followersViewModel: FollowersViewModel
 
     companion object {
-        private const val TAG = "Detail Activity"
         @StringRes
         private val TAB_TITLES = intArrayOf(
             R.string.tab_text_1,
@@ -83,11 +84,11 @@ class DetailActivity : AppCompatActivity() {
 
 
 
-        followersViewModel.getAllFollows().observe(this) {
-            it.forEach {
+        followersViewModel.getAllFollows().observe(this) { user ->
+            user.forEach {
                 if (it.login == getUsername) {
                     followersViewModel.setThisFollow(true)
-                    var follow: Follow = Follow(it.login, it.urlImg)
+                    Follow(it.login, it.urlImg)
                 }
             }
         }
@@ -95,7 +96,7 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
-    fun setDataDetail(detailData: DetailUserResponse) {
+    private fun setDataDetail(detailData: DetailUserResponse) {
         binding.tvUsernameDetail.text = detailData.login
         binding.tvNameDetail.text = detailData.name.toString()
         binding.tvFollowersDetail.text = detailData.followers.toString()
@@ -115,10 +116,17 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setButtonFollow(followed: Boolean) {
+        val typedValue = TypedValue()
         if (!followed) {
-            binding.btnFollow.text = "Follow"
+            binding.btnFollow.text = getString(R.string.follow)
+            this.theme.resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValue, true)
+            binding.btnFollow.setBackgroundColor(ContextCompat.getColor(this, typedValue.resourceId))
         } else {
-            binding.btnFollow.text = "Following"
+            binding.btnFollow.text = getString(R.string.following)
+            this.theme.resolveAttribute(com.google.android.material.R.attr.colorOnSecondary, typedValue, true)
+            binding.btnFollow.setBackgroundColor(ContextCompat.getColor(this, typedValue.resourceId))
+
+
         }
     }
 

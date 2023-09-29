@@ -31,6 +31,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var themeViewModel: ThemeViewModel
     private var clicked = false
 
+    private var theme = false
+
     companion object {
         private const val TAG = "MainActivity"
     }
@@ -49,10 +51,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             ViewModelProvider(this, FollowersViewModelFactory.getInstance("", this@MainActivity.application
             ))[ThemeViewModel::class.java]
 
+
         // Ambil pengaturan tema saat aplikasi pertama kali dijalankan
-        lifecycleScope.launch {
-            themeViewModel.getThemeSetting().collect { currentThemeSetting ->
-                Log.d(TAG, "onCreate: theme saat ini : $currentThemeSetting")
+
+            themeViewModel.getThemeSetting().observe(this) { currentThemeSetting ->
+                theme = currentThemeSetting
+//                Log.d(TAG, "onCreate: theme saat ini : $currentThemeSetting")
                 // Set tema awal aplikasi sesuai dengan pengaturan saat ini
                 val initialTheme = if (currentThemeSetting) {
                     AppCompatDelegate.MODE_NIGHT_YES
@@ -68,7 +72,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
                 AppCompatDelegate.setDefaultNightMode(initialTheme)
             }
-        }
+
 
         mainViewModel.listProfile.observe(this) {
             setUserData(it)
@@ -130,18 +134,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 //                Toast.makeText(this, "Followed Account button clicked", Toast.LENGTH_SHORT).show()
             }
             R.id.fab_setting -> {
-                lifecycleScope.launch {
-                    themeViewModel.getThemeSetting().collect { currentThemeSetting ->
-                        Log.d(TAG, "onClick: tema $currentThemeSetting")
+                        Log.d(TAG, "onClick: tema $theme")
 
                         // Toggle antara tema terang dan tema gelap
-                        val newTheme = if (currentThemeSetting) {
+                        val newTheme = if (theme) {
                             AppCompatDelegate.MODE_NIGHT_NO
                         } else {
                             AppCompatDelegate.MODE_NIGHT_YES
                         }
 
-                        if (currentThemeSetting) {
+                        if (theme) {
                             binding.fabSetting.setImageResource(R.drawable.baseline_wb_sunny_24)
                         } else {
                             binding.fabSetting.setImageResource(R.drawable.baseline_nights_stay_24)
@@ -151,11 +153,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                         AppCompatDelegate.setDefaultNightMode(newTheme)
 
                         // Simpan pengaturan tema yang baru ke dalam database
-                        themeViewModel.saveThemeSetting(!currentThemeSetting)
+                        themeViewModel.saveThemeSetting(!theme)
 
 //                        Toast.makeText(this@MainActivity, "Setting button clicked", Toast.LENGTH_SHORT).show()
-                    }
-                }
+
+
             }
 
         }
