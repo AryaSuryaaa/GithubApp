@@ -19,7 +19,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "KEY", "\"token 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\"")
+        buildConfigField("String", "KEY", "\"token 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\"")
     }
 
     buildTypes {
@@ -68,8 +68,8 @@ dependencies {
 
     //room
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation("androidx.room:room-runtime:2.6.0-beta01")
-    kapt("androidx.room:room-compiler:2.5.0-alpha02")
+    implementation("androidx.room:room-runtime:2.5.2")
+    ksp("androidx.room:room-compiler:2.5.2")
 
     //retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

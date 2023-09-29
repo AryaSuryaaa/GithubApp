@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.aryasurya.githubapp.data.remote.response.ItemsItem
 import com.aryasurya.githubapp.databinding.ActivityFollowedBinding
 import com.aryasurya.githubapp.helper.FollowersViewModelFactory
-import com.aryasurya.githubapp.ui.DetailActivity
+import com.aryasurya.githubapp.ui.detailuser.DetailActivity
 import com.aryasurya.githubapp.ui.UsersAdapter
 
 class FollowedActivity : AppCompatActivity() {
@@ -37,6 +37,10 @@ class FollowedActivity : AppCompatActivity() {
             }
             setUserData(userListFollowed)
 
+        }
+
+        binding.imgArrowBack.setOnClickListener {
+            finish()
         }
     }
 

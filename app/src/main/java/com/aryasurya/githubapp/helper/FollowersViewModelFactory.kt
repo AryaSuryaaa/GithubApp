@@ -3,12 +3,17 @@ package com.aryasurya.githubapp.helper
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.aryasurya.githubapp.data.localsetting.room.ThemeDao
 import com.aryasurya.githubapp.ui.detailuser.FollowersViewModel
 import com.aryasurya.githubapp.ui.followed.FollowedViewModel
+import com.aryasurya.githubapp.ui.themesetting.ThemeViewModel
 
 
 // Kelas ini berfungsi untuk menambahkan context ketika memanggil kelas ViewModel di dalam Activity
-class FollowersViewModelFactory private constructor(private val selectedUser: String, private val mApplication: Application) :
+class FollowersViewModelFactory private constructor(
+    private val selectedUser: String,
+    private val mApplication: Application
+) :
     ViewModelProvider.NewInstanceFactory() {
 
     companion object {
@@ -31,6 +36,9 @@ class FollowersViewModelFactory private constructor(private val selectedUser: St
             }
             modelClass.isAssignableFrom(FollowedViewModel::class.java) -> {
                 FollowedViewModel(mApplication) as T
+            }
+            modelClass.isAssignableFrom(ThemeViewModel::class.java) -> {
+                ThemeViewModel(mApplication) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }

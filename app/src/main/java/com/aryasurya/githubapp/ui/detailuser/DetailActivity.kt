@@ -1,4 +1,4 @@
-package com.aryasurya.githubapp.ui
+package com.aryasurya.githubapp.ui.detailuser
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,7 +10,7 @@ import com.aryasurya.githubapp.data.local.entity.Follow
 import com.aryasurya.githubapp.data.remote.response.DetailUserResponse
 import com.aryasurya.githubapp.databinding.ActivityDetailBinding
 import com.aryasurya.githubapp.helper.FollowersViewModelFactory
-import com.aryasurya.githubapp.ui.detailuser.FollowersViewModel
+import com.aryasurya.githubapp.ui.SectionsPagerAdapter
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -32,6 +32,7 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
 
         val getUsername = intent.getStringExtra("DATA")
+
         // getUsername dipaksa tidak null
         followersViewModel =
             ViewModelProvider(this, FollowersViewModelFactory.getInstance(getUsername!!, this@DetailActivity.application

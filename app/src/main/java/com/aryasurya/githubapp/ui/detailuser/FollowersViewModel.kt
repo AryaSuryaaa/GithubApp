@@ -129,12 +129,4 @@ class FollowersViewModel(private var username: String, application: Application)
         mFollowRepository.delete(follow)
     }
 
-    fun updateFollow(followed: Follow) {
-        if (thisFollow.value != true) {
-            Log.d("Pesan", "ini dari if, fun updateFollow")
-            insertFollow(followed)
-        } else {
-            deleteFollow(followed)
-        }
-    }
 }

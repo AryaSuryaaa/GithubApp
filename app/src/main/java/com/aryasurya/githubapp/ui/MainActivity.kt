@@ -6,15 +6,21 @@ import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aryasurya.githubapp.R
 import com.aryasurya.githubapp.data.remote.response.ItemsItem
 import com.aryasurya.githubapp.databinding.ActivityMainBinding
+import com.aryasurya.githubapp.helper.FollowersViewModelFactory
+import com.aryasurya.githubapp.ui.detailuser.DetailActivity
 import com.aryasurya.githubapp.ui.followed.FollowedActivity
+import com.aryasurya.githubapp.ui.themesetting.ThemeViewModel
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -22,7 +28,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private val mainViewModel by viewModels<MainViewModel>()
     private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.from_bottom_anime) }
     private val toBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim) }
-
+    private lateinit var themeViewModel: ThemeViewModel
     private var clicked = false
 
     companion object {
@@ -38,6 +44,31 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.rvUsers.layoutManager = layoutManager
         val itemDecoration = DividerItemDecoration(this, layoutManager.orientation)
         binding.rvUsers.addItemDecoration(itemDecoration)
+
+        themeViewModel =
+            ViewModelProvider(this, FollowersViewModelFactory.getInstance("", this@MainActivity.application
+            ))[ThemeViewModel::class.java]
+
+        // Ambil pengaturan tema saat aplikasi pertama kali dijalankan
+        lifecycleScope.launch {
+            themeViewModel.getThemeSetting().collect { currentThemeSetting ->
+                Log.d(TAG, "onCreate: theme saat ini : $currentThemeSetting")
+                // Set tema awal aplikasi sesuai dengan pengaturan saat ini
+                val initialTheme = if (currentThemeSetting) {
+                    AppCompatDelegate.MODE_NIGHT_YES
+                } else {
+                    AppCompatDelegate.MODE_NIGHT_NO
+                }
+
+                if (currentThemeSetting) {
+                    binding.fabSetting.setImageResource(R.drawable.baseline_wb_sunny_24)
+                } else {
+                    binding.fabSetting.setImageResource(R.drawable.baseline_nights_stay_24)
+                }
+
+                AppCompatDelegate.setDefaultNightMode(initialTheme)
+            }
+        }
 
         mainViewModel.listProfile.observe(this) {
             setUserData(it)
@@ -96,12 +127,37 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.fab_account -> {
                 val intentToFollowedActivity = Intent(this, FollowedActivity::class.java)
                 startActivity(intentToFollowedActivity)
-
-                Toast.makeText(this, "Account button clicked", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this, "Followed Account button clicked", Toast.LENGTH_SHORT).show()
             }
             R.id.fab_setting -> {
-                Toast.makeText(this, "Setting button clicked", Toast.LENGTH_SHORT).show()
+                lifecycleScope.launch {
+                    themeViewModel.getThemeSetting().collect { currentThemeSetting ->
+                        Log.d(TAG, "onClick: tema $currentThemeSetting")
+
+                        // Toggle antara tema terang dan tema gelap
+                        val newTheme = if (currentThemeSetting) {
+                            AppCompatDelegate.MODE_NIGHT_NO
+                        } else {
+                            AppCompatDelegate.MODE_NIGHT_YES
+                        }
+
+                        if (currentThemeSetting) {
+                            binding.fabSetting.setImageResource(R.drawable.baseline_wb_sunny_24)
+                        } else {
+                            binding.fabSetting.setImageResource(R.drawable.baseline_nights_stay_24)
+                        }
+
+                        // Terapkan tema yang baru
+                        AppCompatDelegate.setDefaultNightMode(newTheme)
+
+                        // Simpan pengaturan tema yang baru ke dalam database
+                        themeViewModel.saveThemeSetting(!currentThemeSetting)
+
+//                        Toast.makeText(this@MainActivity, "Setting button clicked", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
+
         }
     }
 
