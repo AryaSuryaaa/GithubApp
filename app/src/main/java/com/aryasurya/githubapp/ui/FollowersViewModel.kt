@@ -1,18 +1,21 @@
 package com.aryasurya.githubapp.ui
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.aryasurya.githubapp.data.local.Repository
+import com.aryasurya.githubapp.data.local.entity.Follow
 import com.aryasurya.githubapp.data.remote.response.DetailUserResponse
 import com.aryasurya.githubapp.data.remote.response.FollowersResponseItem
 import com.aryasurya.githubapp.data.remote.retrofit.ApiConfig
 import retrofit2.Call
 import retrofit2.Response
 
-class FollowersViewModel(var username: String): ViewModel() {
+class FollowersViewModel(private var username: String, application: Application): ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -22,6 +25,11 @@ class FollowersViewModel(var username: String): ViewModel() {
 
     private val _detailUser = MutableLiveData<DetailUserResponse>()
     val detailUser: LiveData<DetailUserResponse> = _detailUser
+
+    private val mFollowRepository: Repository = Repository(application)
+
+    private val _thisFollow = MutableLiveData<Boolean>()
+    val thisFollow: LiveData<Boolean> =_thisFollow
 
     init {
         getUserDetail()
@@ -39,7 +47,7 @@ class FollowersViewModel(var username: String): ViewModel() {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        _listFollowers.value = responseBody
+                        _listFollowers.value = response.body()
                     }
                 } else {
                     Log.d("FollowersViewModel", "onFailure: ${response.message()}")
@@ -65,7 +73,7 @@ class FollowersViewModel(var username: String): ViewModel() {
                 if (response.isSuccessful) {
                     val responseBody = response.body()
                     if (responseBody != null) {
-                        _listFollowers.value = responseBody
+                        _listFollowers.value = response.body()
                     }
                 } else {
                     Log.d("FollowersViewModel", "onFailure: ${response.message()}")
@@ -79,7 +87,7 @@ class FollowersViewModel(var username: String): ViewModel() {
         })
     }
 
-    fun getUserDetail() {
+    private fun getUserDetail() {
         _isLoading.value = true
         val userDetail = ApiConfig.getApiService().getDetailUser(username)
         userDetail.enqueue(object : retrofit2.Callback<DetailUserResponse> {
@@ -91,7 +99,7 @@ class FollowersViewModel(var username: String): ViewModel() {
                     val responseBody = response.body()
                     if (responseBody != null) {
                         _isLoading.value = false
-                        _detailUser.value = responseBody
+                        _detailUser.value = response.body()
                     } else {
                         Log.d("FollowersViewModel", "onFailure: ${response.message()}")
                     }
@@ -104,31 +112,29 @@ class FollowersViewModel(var username: String): ViewModel() {
             }
         })
     }
-}
 
-class FollowersViewModelFactory private constructor(
-    private val selectedUser: String
-) :
-    ViewModelProvider.Factory{
+    fun getAllFollows(): LiveData<List<Follow>> = mFollowRepository.getAllFollows()
 
-    companion object {
-        @Volatile
-        private var instance: FollowersViewModelFactory? = null
-
-        fun getInstance(context: Context, selectedUser: String): FollowersViewModelFactory =
-            instance ?: synchronized(this) {
-                instance ?: FollowersViewModelFactory(
-                    selectedUser
-                )
-            }
+    fun setThisFollow(thisFollow: Boolean) {
+        _thisFollow.value = thisFollow
     }
 
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        when {
-            modelClass.isAssignableFrom(FollowersViewModel::class.java)->{
-                FollowersViewModel(selectedUser) as T
-            }
-            else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
+    fun insertFollow(follow: Follow) {
+//        setThisFollow(true)
+        mFollowRepository.insert(follow)
+    }
+
+    fun deleteFollow(follow: Follow) {
+//        setThisFollow(true)
+        mFollowRepository.delete(follow)
+    }
+
+    fun updateFollow(followed: Follow) {
+        if (thisFollow.value != true) {
+            Log.d("Pesan", "ini dari if, fun updateFollow")
+            insertFollow(followed)
+        } else {
+            deleteFollow(followed)
         }
+    }
 }

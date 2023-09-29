@@ -8,14 +8,11 @@ import kotlinx.android.parcel.Parcelize
 
 @Entity(tableName = "follow")
 @Parcelize
-data class FollowedEntity(
+data class Follow(
     @field:ColumnInfo(name = "login")
-    @field:PrimaryKey
+    @field:PrimaryKey(autoGenerate = false)
     val login: String,
 
     @field:ColumnInfo(name = "urlImg")
     val urlImg: String,
-
-    @field:ColumnInfo(name = "isFollowed")
-    var isFollowed: Boolean
 ): Parcelable

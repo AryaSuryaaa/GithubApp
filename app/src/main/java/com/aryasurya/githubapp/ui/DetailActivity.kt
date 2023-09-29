@@ -2,12 +2,15 @@ package com.aryasurya.githubapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModelProvider
 import com.aryasurya.githubapp.R
+import com.aryasurya.githubapp.data.local.entity.Follow
 import com.aryasurya.githubapp.data.remote.response.DetailUserResponse
 import com.aryasurya.githubapp.databinding.ActivityDetailBinding
+import com.aryasurya.githubapp.helper.FollowersViewModelFactory
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -31,7 +34,8 @@ class DetailActivity : AppCompatActivity() {
         val getUsername = intent.getStringExtra("DATA")
         // getUsername dipaksa tidak null
         followersViewModel =
-            ViewModelProvider(this, FollowersViewModelFactory.getInstance(this, getUsername!!))[FollowersViewModel::class.java]
+            ViewModelProvider(this, FollowersViewModelFactory.getInstance(getUsername!!, this@DetailActivity.application
+            ))[FollowersViewModel::class.java]
 
         setContentView(binding.root)
 
@@ -39,8 +43,27 @@ class DetailActivity : AppCompatActivity() {
             showLoading(it)
         }
 
-        followersViewModel.detailUser.observe(this) {
-            setDataDetail(it)
+        followersViewModel.thisFollow.observe(this) {
+            setButtonFollow(it)
+        }
+
+        followersViewModel.detailUser.observe(this) {detail ->
+            setDataDetail(detail)
+
+            binding.btnFollow.setOnClickListener {
+                // Perbarui tampilan tombol follow sesuai dengan status terbaru
+                val currentThisFollowValue = followersViewModel.thisFollow.value ?: false
+                followersViewModel.setThisFollow(!currentThisFollowValue)
+
+                if (currentThisFollowValue) {
+                    // Jika sebelumnya telah diikuti (currentThisFollowValue == true), maka hapus dari database lokal
+                    followersViewModel.deleteFollow(Follow(detail.login.toString(), detail.avatarUrl.toString()))
+
+                } else {
+                    // Jika sebelumnya tidak diikuti (currentThisFollowValue == false), maka tambahkan ke database lokal
+                    followersViewModel.insertFollow(Follow(detail.login.toString(), detail.avatarUrl.toString()))
+                }
+            }
 
             val sectionPagerAdapter = SectionsPagerAdapter(this)
             val viewPager = binding.viewPager
@@ -49,10 +72,23 @@ class DetailActivity : AppCompatActivity() {
             TabLayoutMediator(tabs, viewPager) { tab, position ->
                 tab.text = resources.getString(TAB_TITLES[position])
             }.attach()
+
+
         }
 
         binding.imgArrowBack.setOnClickListener {
             finish()
+        }
+
+
+
+        followersViewModel.getAllFollows().observe(this) {
+            it.forEach {
+                if (it.login == getUsername) {
+                    followersViewModel.setThisFollow(true)
+                    var follow: Follow = Follow(it.login, it.urlImg)
+                }
+            }
         }
 
 
@@ -77,5 +113,12 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun setButtonFollow(followed: Boolean) {
+        if (!followed) {
+            binding.btnFollow.text = "Follow"
+        } else {
+            binding.btnFollow.text = "Following"
+        }
+    }
 
 }
