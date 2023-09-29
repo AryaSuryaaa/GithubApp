@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.aryasurya.githubapp.R
 import com.aryasurya.githubapp.data.remote.response.ItemsItem
 import com.aryasurya.githubapp.databinding.ActivityMainBinding
+import com.aryasurya.githubapp.ui.detailuser.DetailActivity
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 

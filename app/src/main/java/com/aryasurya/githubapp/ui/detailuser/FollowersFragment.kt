@@ -1,4 +1,4 @@
-package com.aryasurya.githubapp.ui
+package com.aryasurya.githubapp.ui.detailuser
 
 import FollowersAdapter
 import android.os.Bundle
