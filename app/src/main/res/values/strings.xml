@@ -7,4 +7,9 @@
     <string name="followed_list">Followed List</string>
     <string name="follow">Follow</string>
     <string name="following">Following</string>
+    <string name="github_logo">GitHub Logo</string>
+    <string name="search">Search</string>
+    <string name="menu">Menu</string>
+    <string name="github_username">GitHub Username</string>
+    <string name="showing_results">Showing %d results</string>
 </resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/baseline_search_24"
+        android:title="@string/search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="collapseActionView|always" />
+
+    <item
+        android:id="@+id/followed"
+        android:icon="@drawable/baseline_person_24"
+        tools:title="Followed List"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/theme"
+        tools:icon="@drawable/baseline_wb_sunny_24"
+        tools:title="Change Theme"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu"
+        android:icon="@drawable/baseline_more_vert_24"
+        android:title="@string/menu"
+        app:showAsAction="always"/>
+</menu>

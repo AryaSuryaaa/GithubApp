@@ -1,14 +1,17 @@
 package com.aryasurya.githubapp.ui
 
+import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,14 +23,15 @@ import com.aryasurya.githubapp.ui.detailuser.DetailActivity
 import com.aryasurya.githubapp.ui.followed.FollowedActivity
 import com.aryasurya.githubapp.ui.themesetting.ThemeViewModel
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val mainViewModel by viewModels<MainViewModel>()
-    private val fromBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.from_bottom_anime) }
-    private val toBottom: Animation by lazy { AnimationUtils.loadAnimation(this, R.anim.to_bottom_anim) }
     private lateinit var themeViewModel: ThemeViewModel
     private var clicked = false
+
+    private var menu: Menu? = null
+
 
     private var themeNow = false
 
@@ -39,6 +43,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        setSupportActionBar(binding.toolbarHome)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         val layoutManager = LinearLayoutManager(this)
         binding.rvUsers.layoutManager = layoutManager
@@ -54,6 +61,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         themeViewModel.getThemeSetting().observe(this) { currentThemeSetting ->
             themeNow = currentThemeSetting
 //                Log.d(TAG, "onCreate: theme saat ini : $currentThemeSetting")
+
             // Set tema awal aplikasi sesuai dengan pengaturan saat ini
             val initialTheme = if (currentThemeSetting) {
                 AppCompatDelegate.MODE_NIGHT_YES
@@ -61,16 +69,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
 
-            if (currentThemeSetting) {
-                binding.fabSetting.setImageResource(R.drawable.baseline_wb_sunny_24)
+            val themeItem = menu?.findItem(R.id.theme)
+            if (themeNow) {
+                themeItem?.setIcon(R.drawable.baseline_wb_sunny_24) // Ganti dengan ikon matahari
             } else {
-                binding.fabSetting.setImageResource(R.drawable.baseline_nights_stay_24)
+                themeItem?.setIcon(R.drawable.baseline_nights_stay_24) // Ganti dengan ikon malam
             }
 
             AppCompatDelegate.setDefaultNightMode(initialTheme)
         }
-
-
 
         mainViewModel.listProfile.observe(this) {
             setUserData(it)
@@ -78,28 +85,91 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         mainViewModel.isLoading.observe(this) {
             showLoading(it)
         }
-
-        with(binding) {
-            searchView.setupWithSearchBar(searchBar)
-            searchView
-                    .editText
-                    .setOnEditorActionListener { _, _, _ ->
-                        searchBar.text = searchView.text
-                        searchView.hide()
-                        Log.d(TAG, "ini yang dicari : ${searchBar.text}")
-
-                        // Menerima data yang dicari
-                        mainViewModel.findUsers(searchView.text.toString())
-                        false
-                }
-        }
-
-        binding.fabMore.setOnClickListener(this)
-        binding.fabAccount.setOnClickListener(this)
-        binding.fabSetting.setOnClickListener(this)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.home_menu, menu)
+
+        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView = menu.findItem(R.id.search).actionView as SearchView
+
+        searchView.apply {
+            setSearchableInfo(searchManager.getSearchableInfo(componentName))
+            queryHint = getString(R.string.github_username)
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+//                    EspressoIdlingResource.increment()
+//                    mainViewModel.searchUserByUsername(query ?: "")
+                    mainViewModel.findUsers(query ?: "")
+                    clearFocus()
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+
+            })
+        }
+        // Simpan referensi menu ke properti menu
+        this.menu = menu
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu -> {
+                val followedItem = menu?.findItem(R.id.followed)
+                val themeItem = menu?.findItem(R.id.theme)
+
+                if (!clicked) {
+                    followedItem?.isVisible = true
+                    themeItem?.isVisible = true
+                } else {
+                    followedItem?.isVisible = false
+                    themeItem?.isVisible = false
+                }
+
+                clicked = !clicked // Toggle the visibility state
+                return true
+
+            }
+            R.id.followed -> {
+                val intentToFollowedActivity = Intent(this, FollowedActivity::class.java)
+                startActivity(intentToFollowedActivity)
+//                Toast.makeText(this, "Followed Account button clicked", Toast.LENGTH_SHORT).show()
+
+                return true
+            }
+            R.id.theme -> {
+                Log.d(TAG, "onClick: tema $themeNow")
+
+                // Toggle antara tema terang dan tema gelap
+                val newTheme = if (themeNow) {
+                    AppCompatDelegate.MODE_NIGHT_NO
+                } else {
+                    AppCompatDelegate.MODE_NIGHT_YES
+                }
+
+                // Terapkan tema yang baru
+                AppCompatDelegate.setDefaultNightMode(newTheme)
+
+                // Simpan pengaturan tema yang baru ke dalam database
+                themeViewModel.saveThemeSetting(!themeNow)
+
+//                Toast.makeText(this@MainActivity, "Setting button clicked", Toast.LENGTH_SHORT).show()
+
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+
+
     private fun setUserData(userLogin: List<ItemsItem?>?) {
+        binding.tvResultCount.text = getString(R.string.showing_results, userLogin?.size)
         val adapter = UsersAdapter()
         adapter.submitList(userLogin)
         binding.rvUsers.adapter = adapter
@@ -118,70 +188,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             binding.progressBar.visibility = View.VISIBLE
         } else {
             binding.progressBar.visibility = View.GONE
-        }
-    }
-
-    override fun onClick(v: View?) {
-        when(v?.id) {
-            R.id.fab_more -> {
-                onMoreButtonClicked()
-            }
-            R.id.fab_account -> {
-                val intentToFollowedActivity = Intent(this, FollowedActivity::class.java)
-                startActivity(intentToFollowedActivity)
-//                Toast.makeText(this, "Followed Account button clicked", Toast.LENGTH_SHORT).show()
-            }
-            R.id.fab_setting -> {
-                Log.d(TAG, "onClick: tema $themeNow")
-
-                // Toggle antara tema terang dan tema gelap
-                val newTheme = if (themeNow) {
-                    AppCompatDelegate.MODE_NIGHT_NO
-                } else {
-                    AppCompatDelegate.MODE_NIGHT_YES
-                }
-
-                if (themeNow) {
-                    binding.fabSetting.setImageResource(R.drawable.baseline_wb_sunny_24)
-                } else {
-                    binding.fabSetting.setImageResource(R.drawable.baseline_nights_stay_24)
-                }
-
-                // Terapkan tema yang baru
-                AppCompatDelegate.setDefaultNightMode(newTheme)
-
-                // Simpan pengaturan tema yang baru ke dalam database
-                themeViewModel.saveThemeSetting(!themeNow)
-
-//                        Toast.makeText(this@MainActivity, "Setting button clicked", Toast.LENGTH_SHORT).show()
-            }
-
-        }
-    }
-
-    private fun onMoreButtonClicked() {
-        setVisibility(clicked)
-        setAnimation(clicked)
-        clicked = !clicked
-    }
-
-    private fun setAnimation(clicked: Boolean) {
-        if (!clicked) {
-            binding.fabAccount.visibility = View.VISIBLE
-            binding.fabSetting.visibility = View.VISIBLE
-        } else {
-            binding.fabAccount.visibility = View.INVISIBLE
-            binding.fabSetting.visibility = View.INVISIBLE
-        }
-    }
-
-    private fun setVisibility(clicked: Boolean) {
-        if (!clicked) {
-            binding.fabAccount.startAnimation(toBottom)
-            binding.fabSetting.startAnimation(toBottom)
-        } else {
-            binding.fabAccount.startAnimation(fromBottom)
-            binding.fabSetting.startAnimation(fromBottom)
         }
     }
 }

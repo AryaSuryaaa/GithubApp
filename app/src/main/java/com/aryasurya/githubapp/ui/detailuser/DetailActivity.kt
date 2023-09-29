@@ -123,7 +123,7 @@ class DetailActivity : AppCompatActivity() {
             binding.btnFollow.setBackgroundColor(ContextCompat.getColor(this, typedValue.resourceId))
         } else {
             binding.btnFollow.text = getString(R.string.following)
-            this.theme.resolveAttribute(com.google.android.material.R.attr.colorOnSecondary, typedValue, true)
+            this.theme.resolveAttribute(com.google.android.material.R.attr.colorSecondary, typedValue, true)
             binding.btnFollow.setBackgroundColor(ContextCompat.getColor(this, typedValue.resourceId))
 
 
