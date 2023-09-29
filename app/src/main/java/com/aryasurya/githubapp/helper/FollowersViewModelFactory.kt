@@ -3,7 +3,6 @@ package com.aryasurya.githubapp.helper
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.aryasurya.githubapp.data.localsetting.room.ThemeDao
 import com.aryasurya.githubapp.ui.detailuser.FollowersViewModel
 import com.aryasurya.githubapp.ui.followed.FollowedViewModel
 import com.aryasurya.githubapp.ui.themesetting.ThemeViewModel

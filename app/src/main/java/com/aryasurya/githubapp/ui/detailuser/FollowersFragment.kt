@@ -1,6 +1,6 @@
 package com.aryasurya.githubapp.ui.detailuser
 
-import FollowersAdapter
+import com.aryasurya.githubapp.ui.FollowersAdapter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -26,9 +26,9 @@ class FollowersFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        followersViewModel = ViewModelProvider(requireActivity()).get(FollowersViewModel::class.java)
+        followersViewModel = ViewModelProvider(requireActivity())[FollowersViewModel::class.java]
 
         _binding = FragmentFollowersBinding.inflate(inflater, container, false)
         return binding.root

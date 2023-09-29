@@ -1,12 +1,10 @@
 package com.aryasurya.githubapp.ui.detailuser
 
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.aryasurya.githubapp.data.local.Repository
 import com.aryasurya.githubapp.data.local.entity.Follow
 import com.aryasurya.githubapp.data.remote.response.DetailUserResponse

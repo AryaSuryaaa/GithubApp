@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.aryasurya.githubapp.data.local.room.FollowDatabase
 import com.aryasurya.githubapp.data.localsetting.entity.ThemeEntity
 
 @Database(entities = [ThemeEntity::class], version = 1)

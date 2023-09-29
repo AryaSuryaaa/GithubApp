@@ -20,7 +20,7 @@ class UsersAdapter : androidx.recyclerview.widget.ListAdapter<ItemsItem, UsersAd
         this.onItemClickCallBack = onItemClickCallback
     }
 
-    class MyViewHolder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MyViewHolder(private val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(user: ItemsItem) {
             binding.tvName.text = user.login
             Glide.with(binding.root.context)

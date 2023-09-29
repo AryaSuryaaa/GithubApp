@@ -23,10 +23,4 @@ interface ApiService {
     fun getFollowers(@Path("username") username: String): Call<List<FollowersResponseItem>>
     @GET("users/{username}/following")
     fun getFollowing(@Path("username") username: String): Call<List<FollowersResponseItem>>
-
-
-    @GET("search/users")
-    suspend fun getFollowedUser(
-        @Query("q") q: String
-    ): GithubResponse
 }

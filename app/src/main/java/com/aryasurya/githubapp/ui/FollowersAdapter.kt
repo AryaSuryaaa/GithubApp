@@ -1,3 +1,5 @@
+package com.aryasurya.githubapp.ui
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,7 +9,9 @@ import com.aryasurya.githubapp.data.remote.response.FollowersResponseItem
 import com.aryasurya.githubapp.databinding.ItemListFollowersBinding
 import com.bumptech.glide.Glide
 
-class FollowersAdapter() : ListAdapter<FollowersResponseItem, FollowersAdapter.FollowersViewHolder>(DIFF_CALLBACK) {
+class FollowersAdapter : ListAdapter<FollowersResponseItem, FollowersAdapter.FollowersViewHolder>(
+    DIFF_CALLBACK
+) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<FollowersResponseItem>() {

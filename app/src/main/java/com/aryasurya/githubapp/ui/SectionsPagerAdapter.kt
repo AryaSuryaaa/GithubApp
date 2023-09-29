@@ -8,7 +8,7 @@ import com.aryasurya.githubapp.ui.detailuser.FollowersFragment
 
 class SectionsPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity) {
 
-    var username: String = ""
+    private var username: String = ""
     override fun getItemCount(): Int {
         return 2
     }
