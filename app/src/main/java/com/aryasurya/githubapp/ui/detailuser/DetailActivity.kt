@@ -1,5 +1,6 @@
 package com.aryasurya.githubapp.ui.detailuser
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.TypedValue
@@ -51,6 +52,18 @@ class DetailActivity : AppCompatActivity() {
 
         followersViewModel.detailUser.observe(this) {detail ->
             setDataDetail(detail)
+
+            binding.ivShare.setOnClickListener {
+                val shareIntent = Intent(Intent.ACTION_SEND)
+                shareIntent.type = "text/plain"
+                val shareText = "Url user = https://github.com/${detail.login}"
+
+                // Mengatur teks yang akan dibagikan
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareText)
+
+                // Menampilkan dialog "Share" kepada pengguna
+                startActivity(Intent.createChooser(shareIntent, "Bagikan melalui"))
+            }
 
             binding.btnFollow.setOnClickListener {
                 // Perbarui tampilan tombol follow sesuai dengan status terbaru
@@ -123,8 +136,7 @@ class DetailActivity : AppCompatActivity() {
             binding.btnFollow.setBackgroundColor(ContextCompat.getColor(this, typedValue.resourceId))
         } else {
             binding.btnFollow.text = getString(R.string.following)
-            this.theme.resolveAttribute(com.google.android.material.R.attr.colorSecondary, typedValue, true)
-            binding.btnFollow.setBackgroundColor(ContextCompat.getColor(this, typedValue.resourceId))
+            binding.btnFollow.setBackgroundColor(getColor(R.color.grey))
 
 
         }

@@ -9,9 +9,7 @@ import com.aryasurya.githubapp.data.remote.response.FollowersResponseItem
 import com.aryasurya.githubapp.databinding.ItemListFollowersBinding
 import com.bumptech.glide.Glide
 
-class FollowersAdapter : ListAdapter<FollowersResponseItem, FollowersAdapter.FollowersViewHolder>(
-    DIFF_CALLBACK
-) {
+class FollowersAdapter : ListAdapter<FollowersResponseItem, FollowersAdapter.FollowersViewHolder>(DIFF_CALLBACK) {
 
     companion object {
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<FollowersResponseItem>() {
@@ -25,6 +23,16 @@ class FollowersAdapter : ListAdapter<FollowersResponseItem, FollowersAdapter.Fol
         }
     }
 
+    private lateinit var onItemClickCallBack: OnItemClickCallback
+
+    interface OnItemClickCallback {
+        fun onItemClicked(data: FollowersResponseItem) // Ubah tipe data menjadi FollowersResponseItem
+    }
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallBack = onItemClickCallback
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowersViewHolder {
         val binding = ItemListFollowersBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FollowersViewHolder(binding)
@@ -34,6 +42,10 @@ class FollowersAdapter : ListAdapter<FollowersResponseItem, FollowersAdapter.Fol
     override fun onBindViewHolder(holder: FollowersViewHolder, position: Int) {
         val follower = getItem(position)
         holder.bind(follower)
+
+        holder.itemView.setOnClickListener {
+            onItemClickCallBack.onItemClicked(follower) // Kirim data follower saat item diklik
+        }
     }
 
     inner class FollowersViewHolder(private val binding: ItemListFollowersBinding) : RecyclerView.ViewHolder(binding.root) {

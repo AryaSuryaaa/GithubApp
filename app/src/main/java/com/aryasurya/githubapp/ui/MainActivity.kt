@@ -81,6 +81,7 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.listProfile.observe(this) {
             setUserData(it)
+            Log.d(TAG, "onCreate: ${it.size}")
         }
         mainViewModel.isLoading.observe(this) {
             showLoading(it)

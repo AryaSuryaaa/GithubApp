@@ -1,5 +1,6 @@
 package com.aryasurya.githubapp.ui.detailuser
 
+import android.content.Intent
 import com.aryasurya.githubapp.ui.FollowersAdapter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.aryasurya.githubapp.data.remote.response.FollowersResponseItem
 import com.aryasurya.githubapp.databinding.FragmentFollowersBinding
 
 class FollowersFragment : Fragment() {
@@ -43,6 +45,14 @@ class FollowersFragment : Fragment() {
             val adapter = FollowersAdapter()
             adapter.submitList(it)
             binding.rvFollowersDetail.adapter = adapter
+
+            adapter.setOnItemClickCallback(object : FollowersAdapter.OnItemClickCallback {
+                override fun onItemClicked(data: FollowersResponseItem) {
+                    val intentToDetail = Intent(requireActivity(), DetailActivity::class.java)
+                    intentToDetail.putExtra("DATA", data.login)
+                    startActivity(intentToDetail)
+                }
+            })
         }
 
         followersViewModel.isLoading.observe(requireActivity()) {
