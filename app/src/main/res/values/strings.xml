@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GithubApp</string>
+    <string name="app_name">Github</string>
     <string name="enter_text_to_search">Enter text to Search</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="tab_text_1">Followers</string>
@@ -12,4 +12,5 @@
     <string name="menu">Menu</string>
     <string name="github_username">GitHub Username</string>
     <string name="showing_results">Showing %d results</string>
+    <string name="nameNotYet">[Nama belum ditambahkan]</string>
 </resources>

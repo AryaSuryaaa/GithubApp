@@ -1,11 +1,13 @@
 package com.aryasurya.githubapp.ui.detailuser
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.aryasurya.githubapp.R
@@ -65,6 +67,10 @@ class DetailActivity : AppCompatActivity() {
                 startActivity(Intent.createChooser(shareIntent, "Bagikan melalui"))
             }
 
+            binding.ivWeb.setOnClickListener {
+                showConfirmationDialog(detail.login.toString())
+            }
+
             binding.btnFollow.setOnClickListener {
                 // Perbarui tampilan tombol follow sesuai dengan status terbaru
                 val currentThisFollowValue = followersViewModel.thisFollow.value ?: false
@@ -111,7 +117,11 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setDataDetail(detailData: DetailUserResponse) {
         binding.tvUsernameDetail.text = detailData.login
-        binding.tvNameDetail.text = detailData.name.toString()
+        if (detailData.name == null) {
+            binding.tvNameDetail.text = getString(R.string.nameNotYet)
+        } else {
+            binding.tvNameDetail.text = detailData.name.toString()
+        }
         binding.tvFollowersDetail.text = detailData.followers.toString()
         binding.tvFollowingDetail.text = detailData.following.toString()
         binding.tvRepoDetail.text = detailData.publicRepos.toString()
@@ -142,4 +152,36 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun showConfirmationDialog(getUsername: String) {
+        val builder = AlertDialog.Builder(this)
+
+        // Mengatur pesan pada dialog
+        builder.setMessage("Buka profil di browser?")
+
+        // Menambahkan tombol "Ya"
+        builder.setPositiveButton("Ya") { dialog, which ->
+            openUserProfileInBrowser(getUsername)
+        }
+
+        // Menambahkan tombol "Tidak"
+        builder.setNegativeButton("Tidak") { dialog, which ->
+            dialog.dismiss()
+        }
+
+        // Membuat dan menampilkan dialog
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+    private fun openUserProfileInBrowser(username: String) {
+        val url = "https://github.com/$username"
+
+        val webIntent = Intent(Intent.ACTION_VIEW)
+        webIntent.data = Uri.parse(url)
+
+        // Periksa apakah ada aplikasi yang dapat menangani tampilan web, sebelum memulai aktivitas.
+        if (webIntent.resolveActivity(packageManager) != null) {
+            startActivity(webIntent)
+        }
+    }
 }
