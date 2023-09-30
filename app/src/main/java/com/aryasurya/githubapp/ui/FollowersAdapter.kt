@@ -11,18 +11,6 @@ import com.bumptech.glide.Glide
 
 class FollowersAdapter : ListAdapter<FollowersResponseItem, FollowersAdapter.FollowersViewHolder>(DIFF_CALLBACK) {
 
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<FollowersResponseItem>() {
-            override fun areItemsTheSame(oldItem: FollowersResponseItem, newItem: FollowersResponseItem): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: FollowersResponseItem, newItem: FollowersResponseItem): Boolean {
-                return oldItem == newItem
-            }
-        }
-    }
-
     private lateinit var onItemClickCallBack: OnItemClickCallback
 
     interface OnItemClickCallback {
@@ -56,6 +44,18 @@ class FollowersAdapter : ListAdapter<FollowersResponseItem, FollowersAdapter.Fol
             Glide.with(binding.root.context)
                 .load(follower.avatarUrl)
                 .into(binding.imgFollowersItem)
+        }
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<FollowersResponseItem>() {
+            override fun areItemsTheSame(oldItem: FollowersResponseItem, newItem: FollowersResponseItem): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: FollowersResponseItem, newItem: FollowersResponseItem): Boolean {
+                return oldItem == newItem
+            }
         }
     }
 }

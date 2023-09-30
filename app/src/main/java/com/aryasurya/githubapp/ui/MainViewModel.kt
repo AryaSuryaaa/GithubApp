@@ -22,9 +22,6 @@ class MainViewModel: ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    companion object {
-        private const val TAG = "MainViewModel"
-    }
     init {
         findUsers()
     }
@@ -55,6 +52,9 @@ class MainViewModel: ViewModel() {
         })
     }
 
+    companion object {
+        private const val TAG = "MainViewModel"
+    }
 
 
 }

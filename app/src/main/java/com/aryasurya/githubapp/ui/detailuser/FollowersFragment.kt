@@ -20,11 +20,6 @@ class FollowersFragment : Fragment() {
     private var username: String? = null
     private lateinit var followersViewModel: FollowersViewModel
 
-    companion object {
-        const val ARG_POSITION = "section number"
-        const val ARG_USERNAME = "username"
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,9 +36,9 @@ class FollowersFragment : Fragment() {
 
         binding.rvFollowersDetail.layoutManager = LinearLayoutManager(requireActivity())
 
-        followersViewModel.listFollowers.observe(requireActivity()) {
+        followersViewModel.listFollowers.observe(requireActivity()) { followersList ->
             val adapter = FollowersAdapter()
-            adapter.submitList(it)
+            adapter.submitList(followersList)
             binding.rvFollowersDetail.adapter = adapter
 
             adapter.setOnItemClickCallback(object : FollowersAdapter.OnItemClickCallback {
@@ -58,7 +53,6 @@ class FollowersFragment : Fragment() {
         followersViewModel.isLoading.observe(requireActivity()) {
             showLoading(it)
         }
-
     }
 
     override fun onResume() {
@@ -75,11 +69,16 @@ class FollowersFragment : Fragment() {
         }
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBarDetail.visibility = View.VISIBLE
-        } else {
-            binding.progressBarDetail.visibility = View.GONE
-        }
+    private fun showLoading(state: Boolean) { binding.progressBarDetail.visibility = if (state) View.VISIBLE else View.GONE }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        // Hapus binding ketika fragment dihancurkan
+        _binding = null
+    }
+
+    companion object {
+        const val ARG_POSITION = "section number"
+        const val ARG_USERNAME = "username"
     }
 }

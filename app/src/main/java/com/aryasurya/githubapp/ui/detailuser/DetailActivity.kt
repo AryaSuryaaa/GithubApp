@@ -23,14 +23,6 @@ class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
     private lateinit var followersViewModel: FollowersViewModel
 
-    companion object {
-        @StringRes
-        private val TAB_TITLES = intArrayOf(
-            R.string.tab_text_1,
-            R.string.tab_text_2
-        )
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
@@ -159,12 +151,12 @@ class DetailActivity : AppCompatActivity() {
         builder.setMessage("Buka profil di browser?")
 
         // Menambahkan tombol "Ya"
-        builder.setPositiveButton("Ya") { dialog, which ->
+        builder.setPositiveButton("Ya") { _, _ ->
             openUserProfileInBrowser(getUsername)
         }
 
         // Menambahkan tombol "Tidak"
-        builder.setNegativeButton("Tidak") { dialog, which ->
+        builder.setNegativeButton("Tidak") { dialog, _ ->
             dialog.dismiss()
         }
 
@@ -183,5 +175,13 @@ class DetailActivity : AppCompatActivity() {
         if (webIntent.resolveActivity(packageManager) != null) {
             startActivity(webIntent)
         }
+    }
+
+    companion object {
+        @StringRes
+        private val TAB_TITLES = intArrayOf(
+            R.string.tab_text_1,
+            R.string.tab_text_2
+        )
     }
 }
